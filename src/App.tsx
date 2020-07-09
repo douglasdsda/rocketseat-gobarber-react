@@ -3,11 +3,14 @@ import React from 'react';
 import GlobalStyle from './styles/global';
 import SignIn from './pages/Signin/index';
 // import SignUp from './pages/SignUp/index';
+import { AuthProvider } from './context/AuthContext';
 
 const App: React.FC = () => (
   <>
-    <SignIn />
-    {/* <SignUp /> */}
+    <AuthProvider>
+      <SignIn />
+      {/* <SignUp /> */}
+    </AuthProvider>
     <GlobalStyle />
   </>
 );

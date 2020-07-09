@@ -1,10 +1,11 @@
-import React, { useRef, useCallback } from 'react';
+import React, { useRef, useCallback, useContext } from 'react';
 
 import { FiLogIn, FiMail, FiLock } from 'react-icons/fi';
 
 import * as Yup from 'yup';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
+import { AuthContext } from '../../context/AuthContext';
 import getValidationErros from '../../Utils/getValidationErros';
 
 import { Container, Content, Background } from './styles';
@@ -13,10 +14,19 @@ import logoImg from '../../assets/logo.svg';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 
+interface SignInFormData {
+  email: string;
+  password: string;
+}
+
 export const Signin: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
 
-  const handleSubmit = useCallback(async (data: object) => {
+  const { signIn } = useContext(AuthContext);
+
+
+
+  const handleSubmit = useCallback(async (data: SignInFormData) => {
     try {
       formRef.current?.setErrors({});
 
@@ -29,12 +39,17 @@ export const Signin: React.FC = () => {
       await schema.validate(data, {
         abortEarly: false,
       });
+
+      signIn({
+        email: data.email,
+        password: data.password,
+      });
     } catch (err) {
       const erros = getValidationErros(err);
 
       formRef.current?.setErrors(erros);
     }
-  }, []);
+  }, [signIn]);
 
   return (
     <Container>
