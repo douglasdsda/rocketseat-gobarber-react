@@ -5,7 +5,8 @@ import { FiLogIn, FiMail, FiLock } from 'react-icons/fi';
 import * as Yup from 'yup';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../hooks/auth';
+import { useToast } from '../../hooks/toast';
 import getValidationErros from '../../Utils/getValidationErros';
 
 import { Container, Content, Background } from './styles';
@@ -22,7 +23,8 @@ interface SignInFormData {
 export const Signin: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
 
-  const { user, signIn } = useAuth();
+  const { signIn } = useAuth();
+  const { addToast, removeToast } = useToast();
 
   const handleSubmit = useCallback(
     async (data: SignInFormData) => {
@@ -39,17 +41,20 @@ export const Signin: React.FC = () => {
           abortEarly: false,
         });
 
-        signIn({
+        await signIn({
           email: data.email,
           password: data.password,
         });
       } catch (err) {
-        const erros = getValidationErros(err);
+        if (err instanceof Yup.ValidationError) {
+          const erros = getValidationErros(err);
 
-        formRef.current?.setErrors(erros);
+          formRef.current?.setErrors(erros);
+        }
+        addToast();
       }
     },
-    [signIn],
+    [signIn, addToast],
   );
 
   return (
