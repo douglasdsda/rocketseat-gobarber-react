@@ -17,4 +17,13 @@ yarn add uuidv4
 
 -------------------- obs
 
+traducao
 react-i18n
+
+------------------
+
+react-spring -- animacao
+yarn add react-spring
+
+yarn add react-router-dom
+yarn add @types/react-router-dom
