@@ -32,5 +32,10 @@ yarn add react-day-picker
 
 yarn add date-fns
 
+testes
 
 yarn test --coverage --watchAll false
+
+yarn add @testing-library/react-hooks -D
+yarn add react-test-renderer -D
+yarn add axios-mock-adapter -D
